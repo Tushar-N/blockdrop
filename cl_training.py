@@ -18,7 +18,8 @@ cudnn.benchmark = True
 
 import argparse
 parser = argparse.ArgumentParser(description='BlockDrop Training')
-parser.add_argument('--lr', type=float, default=1e-3, help='learning rate')
+parser.add_argument('--lr', type=float, default=1e-4, help='learning rate')
+parser.add_argument('--beta', type=float, default=1e-1, help='entropy multiplier')
 parser.add_argument('--wd', type=float, default=0.0, help='weight decay')
 parser.add_argument('--model', default='R110_C10', help='R<depth>_<dataset> see utils.py for a list of configurations')
 parser.add_argument('--data_dir', default='data/', help='data directory')
@@ -105,8 +106,11 @@ def train(epoch):
 
         loss = loss.sum()
 
+        probs = probs.clamp(1e-15, 1-1e-15)
+        entropy_loss = probs*torch.log(probs)
+        entropy_loss = args.beta*entropy_loss.sum()
 
-        loss = loss/inputs.size(0)
+        loss = (loss + entropy_loss)/inputs.size(0)
 
         #---------------------------------------------------------------------#
 
