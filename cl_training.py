@@ -18,7 +18,7 @@ cudnn.benchmark = True
 
 import argparse
 parser = argparse.ArgumentParser(description='BlockDrop Training')
-parser.add_argument('--lr', type=float, default=1e-4, help='learning rate')
+parser.add_argument('--lr', type=float, default=1e-3, help='learning rate')
 parser.add_argument('--beta', type=float, default=1e-1, help='entropy multiplier')
 parser.add_argument('--wd', type=float, default=0.0, help='weight decay')
 parser.add_argument('--model', default='R110_C10', help='R<depth>_<dataset> see utils.py for a list of configurations')
