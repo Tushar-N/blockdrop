@@ -1,0 +1,4 @@
+tqdm
+numpy
+tensorboard_logger
+argparse
