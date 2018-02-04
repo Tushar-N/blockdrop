@@ -204,7 +204,7 @@ def get_model(model):
         agent = resnet.Policy224([1,1,1,1], num_blocks=33)
 
     # load pretrained weights into flat ResNet
-    #rnet_checkpoint = torch.load(rnet_checkpoint)
-    #load_weights_to_flatresnet(rnet_checkpoint, rnet)
+    rnet_checkpoint = torch.load(rnet_checkpoint)
+    load_weights_to_flatresnet(rnet_checkpoint, rnet)
 
     return rnet, agent
