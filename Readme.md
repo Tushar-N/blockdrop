@@ -12,7 +12,13 @@ The code is written and tested using Python (2.7) and PyTorch (v0.3.0).
 
 **Packages**: Install using `pip install -r requirements.txt`
 
-**Pretrained models**: Our models require standard pretrained ResNets on CIFAR and ImageNet as starting points. These can be trained using [this](https://github.com/felixgwu/img_classification_pk_pytorch) repository, or can be obtained directly from our shared Google Drive folder [[link]](https://drive.google.com/open?id=15c9KcRkTam77-bZSupBbS9zhcjKnrGKa) and must be placed in  `./cv/pretrained/`.
+**Pretrained models**: Our models require standard pretrained ResNets on CIFAR and ImageNet as starting points. These can be trained using [this](https://github.com/felixgwu/img_classification_pk_pytorch) repository, or can be obtained directly from us
+
+```bash
+wget -O blockdrop-checkpoints.tar.gz https://www.cs.utexas.edu/~tushar/blockdrop/blockdrop-checkpoints.tar.gz
+tar -zxvf blockdrop-checkpoints.tar.gz
+```
+The downloaded checkpoints will be unpacked to `./cv/` for further use. The folder also contains various checkpoints from each stage of training.
 
 **Datasets**: PyTorch's *torchvision* package automatically downloads CIFAR10 and CIFAR100 during training. ImageNet must be downloaded and organized following [these steps](https://github.com/soumith/imagenet-multiGPU.torch#data-processing).
 
@@ -31,7 +37,7 @@ python cl_training.py --model R110_C10 --cv_dir cv/R110_C10_cl/ --lr 1e-3 --batc
 python cl_training.py --model R101_ImgNet --cv_dir cv/R101_ImgNet_cl/ --lr 1e-3 --batch_size 2048 --max_epochs 45 --data_dir data/imagenet/
 ```
 
-Model checkpoints after the curriculum learning step can be found in the shared folder. For example: `./cv/cl_learning/R110_C10/ckpt_E_5300_A_0.754_R_2.22E-01_S_20.10_#_7787.t7`
+Model checkpoints after the curriculum learning step can be found in the downloaded folder. For example: `./cv/cl_learning/R110_C10/ckpt_E_5300_A_0.754_R_2.22E-01_S_20.10_#_7787.t7`
 
 #### Joint Finetuning
 Checkpoints trained during the curriculum learning phase can be used to further jointly finetune the base ResNet to achieve the results reported in the paper. Different values for the penalty parameter control the trade-off between accuracy and speed.
@@ -44,7 +50,7 @@ python finetune.py --model R110_C10 --lr 1e-4 --penalty -10 --pretrained cv/cl_t
 python finetune.py --model R101_ImgNet --lr 1e-4  --penalty -5 --pretrained cv/cl_training/R101_ImgNet/ckpt_E_4_A_0.746_R_-3.70E-01_S_29.79_#_484.t7 --data_dir data/imagenet/ --batch_size 320 --max_epochs 10 --cv_dir cv/R101_ImgNet_ft_-5/
 ```
 
-Model checkpoints after the joint finetuning step can be found in the shared folder. For example: `./cv/finetuned/R101_ImgNet_gamma_5/ckpt_E_10_A_0.764_R_-8.46E-01_S_24.77_#_10.t7`
+Model checkpoints after the joint finetuning step can be found in the downloaded folder. For example: `./cv/finetuned/R101_ImgNet_gamma_5/ckpt_E_10_A_0.764_R_-8.46E-01_S_24.77_#_10.t7`
 
 ## Testing and Profiling
 Once jointly finetuned, models can be profiled for accuracy and FLOPs counts.
@@ -95,5 +101,4 @@ If you find this repository useful in your own research, please consider citing:
 #### TODO
 - [ ] Viz scripts
 - [ ] Make scripts CPU friendly
-- [ ] Allow curl/wget for models and cv dir
 - [ ] Put specific versions for requirements
