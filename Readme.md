@@ -41,7 +41,7 @@ Checkpoints trained during the curriculum learning phase can be used to further 
 python finetune.py --model R110_C10 --lr 1e-4 --penalty -10 --pretrained cv/cl_training/R110_C10/ckpt_E_5300_A_0.754_R_2.22E-01_S_20.10_#_7787.t7 --batch_size 256  --max_epochs 1600 --cv_dir cv/R110_C10_ft_-10/
 
 # Finetune a ResNet-101 on ImageNet using the checkpoint from cl_training
-python finetune.py --model R101_ImgNet --lr 1e-4  --penalty -5 --pretrained cv/cl_training/R101_ImgNet/???.t7 --data_dir data/imagenet/ --batch_size 320 --max_epochs 10 --cv_dir cv/R101_ImgNet_ft_-5/
+python finetune.py --model R101_ImgNet --lr 1e-4  --penalty -5 --pretrained cv/cl_training/R101_ImgNet/ckpt_E_4_A_0.746_R_-3.70E-01_S_29.79_#_484.t7 --data_dir data/imagenet/ --batch_size 320 --max_epochs 10 --cv_dir cv/R101_ImgNet_ft_-5/
 ```
 
 Model checkpoints after the joint finetuning step can be found in the shared folder. For example: `./cv/finetuned/R101_ImgNet_gamma_5/ckpt_E_10_A_0.764_R_-8.46E-01_S_24.77_#_10.t7`
@@ -62,10 +62,13 @@ The model should produce an accuracy of 93.6% and use 1.81E+08 FLOPs on average.
 The ImageNet model can be evaluated in a similar manner, and will generate a  corresponding output.
 ```
 python test.py --model R101_ImgNet --load cv/finetuned/R101_ImgNet_gamma_5/ckpt_E_10_A_0.764_R_-8.46E-01_S_24.77_#_10.t7
-
-???
-
 ```
+    Accuracy: 0.764
+    Block Usage: 24.770 ± 0.960
+    FLOPs/img: 1.25E+10 ± 4.26E+08
+    Unique Policies: 10
+```
+
 
 ## Visualization
 Learned policies over ResNet blocks show that there is a clear separation between easy/hard images in terms of the number of blocks they require. In addition, unique policies over the blocks admit distinct image styles.
@@ -89,8 +92,6 @@ If you find this repository useful in your own research, please consider citing:
 ```
 
 #### TODO
-- [ ] Add missing checkpoints (ImgNet Cl for one)
-- [ ] Add missing ImgNet profile results
 - [ ] Viz scripts
 - [ ] Make scripts CPU friendly
 - [ ] Allow curl/wget for models and cv dir
