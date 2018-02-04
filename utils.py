@@ -207,4 +207,4 @@ def get_model(model):
     rnet_checkpoint = torch.load(rnet_checkpoint)
     load_weights_to_flatresnet(rnet_checkpoint, rnet)
 
-    return rnet, agent, layer_config
+    return rnet, agent
