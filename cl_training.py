@@ -189,8 +189,8 @@ def test(epoch):
 trainset, testset = utils.get_dataset(args.model, args.data_dir)
 trainloader = torchdata.DataLoader(trainset, batch_size=args.batch_size, shuffle=True, num_workers=4)
 testloader = torchdata.DataLoader(testset, batch_size=args.batch_size, shuffle=False, num_workers=4)
-rnet, agent, layer_config = utils.get_model(args.model)
-num_blocks = sum(layer_config)
+rnet, agent = utils.get_model(args.model)
+num_blocks = sum(rnet.layer_config)
 
 
 
