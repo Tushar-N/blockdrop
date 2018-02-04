@@ -59,13 +59,14 @@ The model should produce an accuracy of 93.6% and use 1.81E+08 FLOPs on average.
     Unique Policies: 469
 ```
 
-The ImageNet model can be evaluated in a similar manner, and will generate a  corresponding output.
+The ImageNet model can be evaluated in a similar manner, and will generate a corresponding output.
 ```
 python test.py --model R101_ImgNet --load cv/finetuned/R101_ImgNet_gamma_5/ckpt_E_10_A_0.764_R_-8.46E-01_S_24.77_#_10.t7
 ```
+```
     Accuracy: 0.764
-    Block Usage: 24.770 ± 0.960
-    FLOPs/img: 1.25E+10 ± 4.26E+08
+    Block Usage: 24.770 ± 0.980
+    FLOPs/img: 1.25E+10 ± 4.28E+08
     Unique Policies: 10
 ```
 

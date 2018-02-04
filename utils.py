@@ -5,7 +5,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as torchdata
 import numpy as np
 
-# Save the training script and all the arguments to a file so that you 
+# Save the training script and all the arguments to a file so that you
 # don't feel like an idiot later when you can't replicate results
 import shutil
 def save_args(__file__, args):
@@ -49,7 +49,7 @@ class LrScheduler:
 def load_weights_to_flatresnet(source_model, target_model):
 
     # compatibility for nn.Modules + checkpoints
-    if 'state_dict' not in source_model:
+    if hasattr(source_model, 'state_dict'):
         source_model = {'state_dict': source_model.state_dict()}
     source_state = source_model['state_dict']
     target_state = target_model.state_dict()
@@ -204,7 +204,7 @@ def get_model(model):
         agent = resnet.Policy224([1,1,1,1], num_blocks=33)
 
     # load pretrained weights into flat ResNet
-    rnet_checkpoint = torch.load(rnet_checkpoint)
-    load_weights_to_flatresnet(rnet_checkpoint, rnet)
+    #rnet_checkpoint = torch.load(rnet_checkpoint)
+    #load_weights_to_flatresnet(rnet_checkpoint, rnet)
 
     return rnet, agent

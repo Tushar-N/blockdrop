@@ -15,7 +15,6 @@ import copy
 from models import base
 import utils
 
-
 #--------------------------------------------------------------------------------------------------#
 class FlatResNet(nn.Module):
 
@@ -67,7 +66,7 @@ class FlatResNet(nn.Module):
                 else:
                     x = residual
                 t += 1
-                  
+
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         x = self.fc(x)
@@ -232,11 +231,14 @@ class Policy224(nn.Module):
     def __init__(self, layer_config=[1,1,1,1], num_blocks=16):
         super(Policy224, self).__init__()
         self.features = FlatResNet224(base.BasicBlock, layer_config, num_classes=1000)
+
+        resnet18 = torchmodels.resnet18(pretrained=True)
+        utils.load_weights_to_flatresnet(resnet18, self.features)
+
+        self.features.avgpool = nn.AvgPool2d(4)
         self.feat_dim = self.features.fc.weight.data.shape[1]
         self.features.fc = nn.Sequential()
 
-        resnet18 = torchmodels.resnet18(pretrained=True)
-        utils.load_weights_from_pytorch(resnet18, self.features)
 
         self.logit = nn.Linear(self.feat_dim, num_blocks)
         self.vnet = nn.Linear(self.feat_dim, 1)
@@ -296,7 +298,7 @@ class StepResnet32(FlatResNet32):
     def step_single(self, action):
         segment, b = self.state_ptr[self.t]
         residual = self.ds[segment](self.state) if b==0 else self.state
-        
+
         if action.data[0,0]==1:
             self.state = F.relu(residual + self.blocks[segment][b](self.state))
         else:

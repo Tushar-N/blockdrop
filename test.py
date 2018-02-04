@@ -66,7 +66,7 @@ def test():
 
         inputs, targets = Variable(inputs, volatile=True).cuda(), Variable(targets).cuda()
         probs, _ = agent(inputs)
-        
+
         policy = probs.clone()
         policy[policy<0.5] = 0.0
         policy[policy>=0.5] = 1.0
@@ -95,12 +95,14 @@ def test():
 
 #--------------------------------------------------------------------------------------------------------#
 trainset, testset = utils.get_dataset(args.model, args.data_dir)
-testloader = torchdata.DataLoader(testset, batch_size=1, shuffle=False, num_workers=0)
+testloader = torchdata.DataLoader(testset, batch_size=1, shuffle=False, num_workers=4)
 rnet, agent = utils.get_model(args.model)
 
 # if no model is loaded, use all blocks
 agent.logit.weight.data.fill_(0)
 agent.logit.bias.data.fill_(10)
+
+print "loading checkpoints"
 
 if args.load is not None:
     utils.load_checkpoint(rnet, agent, args.load)
