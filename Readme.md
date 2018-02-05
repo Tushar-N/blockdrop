@@ -97,8 +97,3 @@ If you find this repository useful in your own research, please consider citing:
   year={2017}
 }
 ```
-
-#### TODO
-- [ ] Viz scripts
-- [ ] Make scripts CPU friendly
-- [ ] Put specific versions for requirements
