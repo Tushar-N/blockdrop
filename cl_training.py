@@ -60,7 +60,7 @@ def train(epoch):
     agent.train()
 
     matches, rewards, policies = [], [], []
-    for batch_idx, (inputs, targets) in enumerate(trainloader):
+    for batch_idx, (inputs, targets) in tqdm.tqdm(enumerate(trainloader), total=len(trainloader)):
 
         inputs, targets = Variable(inputs), Variable(targets).cuda(async=True)
         if not args.parallel:
@@ -90,18 +90,17 @@ def train(epoch):
 
         v_inputs = Variable(inputs.data, volatile=True)
         preds_map = rnet.forward(v_inputs, policy_map)
-        preds_sample = rnet.forward(inputs, policy)
+        preds_sample = rnet.forward(v_inputs, policy)
 
         reward_map, _ = get_reward(preds_map, targets, policy_map.data)
         reward_sample, match = get_reward(preds_sample, targets, policy.data)
 
         advantage = reward_sample - reward_map
-        # advantage = advantage.expand_as(policy)
 
         loss = -distr.log_prob(policy)
         loss = loss * Variable(advantage).expand_as(policy)
 
-        if not policy_mask is None:
+        if policy_mask is not None:
             loss = policy_mask * loss # mask for curriculum learning
 
         loss = loss.sum()
@@ -139,7 +138,7 @@ def test(epoch):
     agent.eval()
 
     matches, rewards, policies = [], [], []
-    for batch_idx, (inputs, targets) in enumerate(testloader):
+    for batch_idx, (inputs, targets) in tqdm.tqdm(enumerate(testloader), total=len(testloader)):
 
         inputs, targets = Variable(inputs, volatile=True), Variable(targets).cuda(async=True)
         if not args.parallel:
@@ -192,8 +191,6 @@ testloader = torchdata.DataLoader(testset, batch_size=args.batch_size, shuffle=F
 rnet, agent = utils.get_model(args.model)
 num_blocks = sum(rnet.layer_config)
 
-
-
 start_epoch = 0
 if args.load is not None:
     checkpoint = torch.load(args.load)
@@ -201,15 +198,12 @@ if args.load is not None:
     start_epoch = checkpoint['epoch'] + 1
     print 'loaded agent from', args.load
 
-
 if args.parallel:
     agent = nn.DataParallel(agent)
     rnet = nn.DataParallel(rnet)
 
-rnet.cuda()
+rnet.eval().cuda()
 agent.cuda()
-
-rnet.eval()
 
 optimizer = optim.Adam(agent.parameters(), lr=args.lr, weight_decay=args.wd)
 
