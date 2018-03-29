@@ -44,7 +44,7 @@ Checkpoints trained during the curriculum learning phase can be used to further 
 
 ```bash
 # Finetune a ResNet-110 on CIFAR 10 using the checkpoint from cl_training
-python finetune.py --model R110_C10 --lr 1e-4 --penalty -10 --pretrained cv/cl_training/R110_C10/ckpt_E_5300_A_0.754_R_2.22E-01_S_20.10_#_7787.t7 --batch_size 256  --max_epochs 1600 --cv_dir cv/R110_C10_ft_-10/
+python finetune.py --model R110_C10 --lr 1e-4 --penalty -10 --pretrained cv/cl_training/R110_C10/ckpt_E_5300_A_0.754_R_2.22E-01_S_20.10_#_7787.t7 --batch_size 256  --max_epochs 2000 --cv_dir cv/R110_C10_ft_-10/
 
 # Finetune a ResNet-101 on ImageNet using the checkpoint from cl_training
 python finetune.py --model R101_ImgNet --lr 1e-4  --penalty -5 --pretrained cv/cl_training/R101_ImgNet/ckpt_E_4_A_0.746_R_-3.70E-01_S_29.79_#_484.t7 --data_dir data/imagenet/ --batch_size 320 --max_epochs 10 --cv_dir cv/R101_ImgNet_ft_-5/
@@ -97,8 +97,3 @@ If you find this repository useful in your own research, please consider citing:
   year={2018}
 }
 ```
-
-#### TODO
-- [ ] Viz scripts
-- [ ] Make scripts CPU friendly
-- [ ] Put specific versions for requirements
