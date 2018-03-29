@@ -90,11 +90,11 @@ For more qualitative results, see Sec. 4.3 and Figures 4. and 5. in the paper.
 
 If you find this repository useful in your own research, please consider citing:
 ```
-@article{wu2017blockdrop,
+@inproceedings{blockdrop,
   title={BlockDrop: Dynamic Inference Paths in Residual Networks},
   author={Wu, Zuxuan and Nagarajan, Tushar and Kumar, Abhishek and Rennie, Steven and Davis, Larry S and Grauman, Kristen and Feris, Rogerio},
-  journal={arXiv preprint arXiv:1711.08393},
-  year={2017}
+  booktitle={CVPR},
+  year={2018}
 }
 ```
 
