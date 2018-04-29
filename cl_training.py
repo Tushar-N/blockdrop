@@ -106,10 +106,10 @@ def train(epoch):
         loss = loss.sum()
 
         probs = probs.clamp(1e-15, 1-1e-15)
-        entropy_loss = probs*torch.log(probs)
+        entropy_loss = -probs*torch.log(probs)
         entropy_loss = args.beta*entropy_loss.sum()
 
-        loss = (loss + entropy_loss)/inputs.size(0)
+        loss = (loss - entropy_loss)/inputs.size(0)
 
         #---------------------------------------------------------------------#
 
