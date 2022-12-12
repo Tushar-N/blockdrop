@@ -15,7 +15,7 @@ The code is written and tested using Python (2.7) and PyTorch (v0.3.0).
 **Pretrained models**: Our models require standard pretrained ResNets on CIFAR and ImageNet as starting points. These can be trained using [this](https://github.com/felixgwu/img_classification_pk_pytorch) repository, or can be obtained directly from us
 
 ```bash
-wget -O blockdrop-checkpoints.tar.gz https://www.cs.utexas.edu/~tushar/blockdrop/blockdrop-checkpoints.tar.gz
+wget -O blockdrop-checkpoints.tar.gz https://utexas.box.com/shared/static/ok98i51v14c0q9lvs1z5g71m6b3zm8sj.gz
 tar -zxvf blockdrop-checkpoints.tar.gz
 ```
 The downloaded checkpoints will be unpacked to `./cv/` for further use. The folder also contains various checkpoints from each stage of training.
